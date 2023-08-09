@@ -45,4 +45,3 @@ app.*.map.json
 
 /integration_test/
 /appium/
-.github/
