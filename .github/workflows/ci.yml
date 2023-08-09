@@ -42,7 +42,7 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }} # Use the secret
         run: |
-          git config user.email "actions-bot@example.com"
-          git config user.name "GitHub Actions Bot"
+          git config user.email "ashraf.khan@neosoftmail.com"
+          git config user.name "AshrafNeo"
           git tag -a v1.0.0 -m "Tagging the APK"
           git push origin v1.0.0 --force-with-lease=refs/tags/v1.0.0
