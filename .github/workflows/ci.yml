@@ -1,38 +1,37 @@
 name: learn-github-actions
-on: 
 
-push:
+on:
+  push:
+    branches:
+      - master
 
-branches: 
-- master
+jobs:
+  checks-bat-version:
+    runs-on: ubuntu-latest
 
-jobs: 
-checks-bat-version
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-runs-on: ubuntu-latest
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "zulu"
+          java-version: "11"
 
-step: 
-- uses: actions/checkout@v2
-- uses: actions/setup-java@v2 #plugin setting for java
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.10.1"
 
-with:
+      - name: Install dependencies
+        run: flutter pub get
 
-distribution: "zulu"
+      - name: Run tests
+        run: flutter test
 
-java-version: "11" #defines java version
+      - name: Build APK
+        run: flutter build apk
 
-- uses: subosito/flutter-action@v2
-
-with:
-
-flutter-version: "3.10.1"
-
-- run: flutter pub get #installing the plugins for the flutter project
-
-- run: flutter test #running flutter test
-
-- run: flutter build apk #building flutter apk
-
-- run: flutter build appbundle #building flutter bundle
-
-
+      - name: Build App Bundle
+        run: flutter build appbundle
