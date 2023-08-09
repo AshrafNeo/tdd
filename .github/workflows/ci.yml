@@ -3,7 +3,7 @@ name: learn-github-actions
 on:
   push:
     branches:
-      - release
+      - master
 
 jobs:
   checks-bat-version:
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.10.1"
+          flutter-version: "3.10.1"  # Adjust the version as needed
 
       - name: Install dependencies
         run: flutter pub get
@@ -33,6 +33,21 @@ jobs:
       - name: Build APK
         run: flutter build apk
 
+      - name: Create GitHub Artifact Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/app-release.apk"
+          token: ${{ secrets.PAT_TOKEN }}
+          commit: ${{ github.sha }}
 
+      - name: Upload app bundle artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: build/app/outputs/bundle/release/app-release.apk
 
-   
+      - name: Run Fastlane
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: upload_firebase #lane to be executed
+          subdirectory: android #mention if the fastlane folder is inside the android folder.
